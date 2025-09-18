@@ -1,0 +1,35 @@
+{
+  "name": "backend",
+  "version": "0.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --watch src --exec tsx server.ts",
+    "start": "tsc && node dist/index.ts",
+    "format": "prettier --write 'src/**/*.ts'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.15.1",
+  "dependencies": {
+    "@sindresorhus/slugify": "^3.0.0",
+    "better-sqlite3": "^12.2.0",
+    "express": "^5.1.0",
+    "sqlite": "^5.1.1"
+  },
+  "devDependencies": {
+    "@tsconfig/node22": "^22.0.2",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/express": "^5.0.3",
+    "@types/node": "^22.18.5",
+    "nodemon": "^3.1.10",
+    "prettier": "3.6.2",
+    "prettier-plugin-sql": "^0.19.2",
+    "prisma": "^6.16.1",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.5",
+    "typescript": "~5.8.3"
+  }
+}
