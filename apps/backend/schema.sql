@@ -13,3 +13,16 @@ CREATE TABLE IF NOT EXISTS posts (
     category_id INTEGER,
     FOREIGN KEY (category_id) REFERENCES categories (id)
 );
+
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,         -- SQLite
+
+    username TEXT UNIQUE NOT NULL,
+    email TEXT UNIQUE,                            -- optional, can be NULL
+    password_hash TEXT NOT NULL,
+
+    is_active BOOLEAN NOT NULL DEFAULT 1,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

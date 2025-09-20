@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --watch src --exec tsx server.ts",
+    "dev": "dotenvx run -- nodemon --watch src --exec tsx server.ts",
     "start": "tsc && node dist/index.ts",
     "format": "prettier --write 'src/**/*.ts'",
     "seed": "tsx src/database/seed.ts"
@@ -15,15 +15,21 @@
   "license": "ISC",
   "packageManager": "pnpm@10.15.1",
   "dependencies": {
+    "@dotenvx/dotenvx": "^1.50.1",
     "@sindresorhus/slugify": "^3.0.0",
+    "bcrypt": "^6.0.0",
     "better-sqlite3": "^12.2.0",
     "express": "^5.1.0",
-    "sqlite": "^5.1.1"
+    "jsonwebtoken": "^9.0.2",
+    "sqlite": "^5.1.1",
+    "zod": "^4.1.9"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.2",
+    "@types/bcrypt": "^6.0.0",
     "@types/better-sqlite3": "^7.6.13",
     "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^22.18.5",
     "nodemon": "^3.1.10",
     "prettier": "3.6.2",

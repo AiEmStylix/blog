@@ -46,7 +46,7 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
 router.get('/:id', (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = Number(req.params.id);
-    const stmt = db.prepare('SELECT * FROM categories WHERE Id = ?');
+    const stmt = db.prepare('SELECT * FROM categories WHERE id = ?');
     const result = stmt.get(id) as Category;
     return res.json(result);
   } catch (error) {
