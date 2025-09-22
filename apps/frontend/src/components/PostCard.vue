@@ -39,7 +39,7 @@ const props = defineProps<{
 
     <!-- Footer -->
     <template #footer>
-      <div class="flex items-center pt-3 border-t text-sm text-gray-500">
+      <div class="flex items-center pt-3 text-sm text-gray-500">
         <UAvatar :src="props.avatar" size="sm" class="mr-2" />
         <div class="flex flex-col">
           <span class="font-medium">{{ props.author }}</span>

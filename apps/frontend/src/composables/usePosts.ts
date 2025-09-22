@@ -2,8 +2,9 @@
 import { generateFakePosts } from '@/mock/posts';
 import { ref, computed } from 'vue';
 
+const posts = ref(generateFakePosts(20));
+
 export const usePosts = () => {
-  const posts = ref(generateFakePosts(20));
   const currentPage = ref(1);
   const pageSize = 6;
 
@@ -12,10 +13,15 @@ export const usePosts = () => {
     return posts.value.slice(start, start + pageSize);
   });
 
+  const getPostsByUuid = (uuid: string) => {
+    return posts.value.find((post) => post.id === uuid) || null;
+  };
+
   return {
     posts,
     paginatedPosts,
     currentPage,
     pageSize,
+    getPostsByUuid,
   };
 };

@@ -1,4 +1,5 @@
 import HomePage from '@/views/HomePage.vue';
+import PostDetails from '@/views/PostDetails.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
@@ -8,6 +9,12 @@ const router = createRouter({
       path: '/',
       name: 'Home',
       component: HomePage,
+    },
+    {
+      path: '/posts/:id',
+      name: 'PostDetails',
+      component: PostDetails,
+      props: true,
     },
   ],
 });

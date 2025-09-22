@@ -10,8 +10,15 @@ const { paginatedPosts, posts, currentPage, pageSize } = usePosts();
     <h1 class="text-2xl font-bold mb-6">Latest Posts</h1>
 
     <!-- Grid of posts -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
-      <PostCard v-for="post in paginatedPosts" :key="post.id" v-bind="post" />
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+      <RouterLink
+        v-for="post in paginatedPosts"
+        :key="post.id"
+        :to="`/posts/${post.id}`"
+        class="block"
+      >
+        <PostCard v-bind="post" />
+      </RouterLink>
     </div>
 
     <!-- Pagination -->
