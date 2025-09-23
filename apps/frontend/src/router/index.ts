@@ -1,3 +1,4 @@
+import ErrorPage from '@/views/ErrorPage.vue';
 import HomePage from '@/views/HomePage.vue';
 import PostDetails from '@/views/PostDetails.vue';
 import { createRouter, createWebHistory } from 'vue-router';
@@ -15,6 +16,11 @@ const router = createRouter({
       name: 'PostDetails',
       component: PostDetails,
       props: true,
+    },
+    //Page not found component
+    {
+      path: '/:pathMatch(.*)*',
+      component: ErrorPage,
     },
   ],
 });
