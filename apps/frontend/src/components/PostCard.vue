@@ -39,13 +39,7 @@ const props = defineProps<{
 
     <!-- Footer -->
     <template #footer>
-      <div class="flex items-center pt-3 text-sm text-gray-500">
-        <UAvatar :src="props.avatar" size="sm" class="mr-2" />
-        <div class="flex flex-col">
-          <span class="font-medium">{{ props.author }}</span>
-          <span class="text-xs text-gray-400">{{ props.createdAt }}</span>
-        </div>
-      </div>
+      <span class="text-xs text-gray-400">{{ props.createdAt }}</span>
     </template>
   </UCard>
 </template>
