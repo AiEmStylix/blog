@@ -1,11 +1,9 @@
-<script setup lang="ts"></script>
 <template>
-  <UError
-    class="border"
-    :error="{
-      statusCode: 404,
-      statusMessage: 'Page not found',
-      message: 'The page you are looking for does not exist.',
-    }"
-  ></UError>
+  <main class="flex justify-center items-center flex-col gap-2">
+    <div class="text-center bg-blue-500">
+      <h1>404</h1>
+      <p>Page not found</p>
+    </div>
+    <UButton to="/">Back to Home</UButton>
+  </main>
 </template>
