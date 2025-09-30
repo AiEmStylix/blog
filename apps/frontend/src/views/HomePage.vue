@@ -1,27 +1,51 @@
 <script setup lang="ts">
+import { fetchPosts } from '@/api/posts';
 import PostCard from '@/components/PostCard.vue';
 import ProfileCard from '@/components/ProfileCard.vue';
 import { usePosts } from '@/composables/usePosts';
 
-const { paginatedPosts, posts, currentPage, pageSize } = usePosts();
+import type { Post } from '@/types/Post';
+import { onMounted, ref } from 'vue';
+
+const { paginatedPosts, currentPage, pageSize } = usePosts();
+
+const posts = ref<Post[]>([]);
+const loading = ref(true);
+const error = ref<string | null>(null);
+
+onMounted(async () => {
+  try {
+    const response = await fetchPosts();
+    // Extract the posts array from the response object
+    posts.value = response; // ← This is the fix!
+  } catch (err) {
+    console.error('API Error:', err);
+    error.value = 'Failed to load posts';
+  } finally {
+    loading.value = false;
+  }
+});
 </script>
 
 <template>
   <div class="max-w-6xl mx-auto p-8 pt-16">
+    {{ posts }}
     <ProfileCard class="p-8" />
     <USeparator class="my-6" />
     <h1 class="text-2xl text-center font-bold mb-6">Latest Posts</h1>
 
     <!-- Grid of posts -->
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
-      <RouterLink
+      <PostCard
         v-for="post in paginatedPosts"
         :key="post.id"
-        :to="`/posts/${post.id}`"
-        class="block"
-      >
-        <PostCard v-bind="post" />
-      </RouterLink>
+        :id="post.id"
+        :title="post.title"
+        :content="post.content"
+        :category_id="post.category_id"
+        :created_at="post.created_at"
+        :image="post.image"
+      ></PostCard>
     </div>
 
     <!-- Pagination -->
