@@ -6,7 +6,7 @@ import { authMiddleware } from '../middleware/authMiddleware';
 
 const router = Router();
 
-router.use('/categories', authMiddleware, categoriesRouter);
+router.use('/categories', categoriesRouter);
 router.use('/posts', postsRouter);
 router.use('/auth', authRouter);
 
