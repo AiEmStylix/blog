@@ -7,17 +7,14 @@ import { usePosts } from '@/composables/usePosts';
 import type { Post } from '@/types/Post';
 import { onMounted, ref } from 'vue';
 
-const { paginatedPosts, currentPage, pageSize } = usePosts();
+const { paginatedPosts, currentPage, pageSize, posts, loadPosts } = usePosts();
 
-const posts = ref<Post[]>([]);
 const loading = ref(true);
 const error = ref<string | null>(null);
 
 onMounted(async () => {
   try {
-    const response = await fetchPosts();
-
-    posts.value = response;
+    await loadPosts();
   } catch (err) {
     console.error('API Error:', err);
     error.value = 'Failed to load posts';
