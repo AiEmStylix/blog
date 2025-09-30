@@ -1,3 +1,4 @@
+import AdminPage from '@/views/AdminPage.vue';
 import ErrorPage from '@/views/ErrorPage.vue';
 import HomePage from '@/views/HomePage.vue';
 import PostDetails from '@/views/PostDetails.vue';
@@ -16,6 +17,11 @@ const router = createRouter({
       name: 'PostDetails',
       component: PostDetails,
       props: true,
+    },
+    {
+      path: '/admin',
+      name: 'Admin',
+      component: AdminPage,
     },
     //Page not found component
     {
