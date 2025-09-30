@@ -11,18 +11,7 @@ CREATE TABLE IF NOT EXISTS posts (
     title TEXT NOT NULL,
     content TEXT,
     category_id INTEGER,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (category_id) REFERENCES categories (id)
 );
 
-CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,         -- SQLite
-
-    username TEXT UNIQUE NOT NULL,
-    email TEXT UNIQUE,                            -- optional, can be NULL
-    password_hash TEXT NOT NULL,
-
-    is_active BOOLEAN NOT NULL DEFAULT 1,
-
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);

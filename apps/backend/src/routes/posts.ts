@@ -36,9 +36,7 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
   try {
     const stmt = db.prepare('SELECT * FROM posts ORDER BY title');
     const posts = stmt.all() as Post[];
-    res.status(201).json({
-      posts,
-    });
+    res.status(201).json(posts);
   } catch (error) {
     next(error);
   }
@@ -49,9 +47,7 @@ router.get('/:id', (req: Request, res: Response, next: NextFunction) => {
     const id = Number(req.params.id);
     const stmt = db.prepare('SELECT * FROM posts WHERE id = ?');
     const post = stmt.get(id) as Post;
-    res.status(201).json({
-      post,
-    });
+    res.status(201).json(post);
   } catch (error) {
     next(error);
   }
