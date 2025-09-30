@@ -16,8 +16,8 @@ const error = ref<string | null>(null);
 onMounted(async () => {
   try {
     const response = await fetchPosts();
-    // Extract the posts array from the response object
-    posts.value = response; // ← This is the fix!
+
+    posts.value = response;
   } catch (err) {
     console.error('API Error:', err);
     error.value = 'Failed to load posts';
@@ -29,7 +29,6 @@ onMounted(async () => {
 
 <template>
   <div class="max-w-6xl mx-auto p-8 pt-16">
-    {{ posts }}
     <ProfileCard class="p-8" />
     <USeparator class="my-6" />
     <h1 class="text-2xl text-center font-bold mb-6">Latest Posts</h1>

@@ -1,35 +1,21 @@
 // composables/usePosts.ts
-import { fetchPosts } from '@/api/posts';
-import { generateFakePosts } from '@/mock/posts';
 import { ref, computed } from 'vue';
+import { fetchPosts } from '@/api/posts';
+import type { Post } from '@/types/Post';
 
-const posts = ref(await fetchPosts());
-
-// export const useFakePosts = () => {
-//   const currentPage = ref(1);
-//   const pageSize = 6;
-
-//   const paginatedPosts = computed(() => {
-//     const start = (currentPage.value - 1) * pageSize;
-//     return posts.value.slice(start, start + pageSize);
-//   });
-
-//   const getPostsByUuid = (uuid: string) => {
-//     return posts.value.find((post) => post.id === uuid) || null;
-//   };
-
-// return {
-//   posts,
-//   paginatedPosts,
-//   currentPage,
-//   pageSize,
-//   getPostsByUuid,
-// };
-// };
+const posts = ref<Post[]>([]);
+const loaded = ref(false);
 
 export const usePosts = () => {
   const currentPage = ref(1);
   const pageSize = 6;
+
+  const loadPosts = async () => {
+    if (!loaded.value) {
+      posts.value = await fetchPosts();
+      loaded.value = true;
+    }
+  };
 
   const paginatedPosts = computed(() => {
     const start = (currentPage.value - 1) * pageSize;
@@ -41,5 +27,6 @@ export const usePosts = () => {
     paginatedPosts,
     currentPage,
     pageSize,
+    loadPosts,
   };
 };

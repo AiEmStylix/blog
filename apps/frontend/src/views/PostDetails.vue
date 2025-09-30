@@ -37,7 +37,6 @@ onMounted(async () => {
         <USeparator class="mb-4" />
 
         <div v-html="content" class="prose max-w-full dark:prose-invert"></div>
-        {{ post }}
       </article>
     </div>
   </main>
