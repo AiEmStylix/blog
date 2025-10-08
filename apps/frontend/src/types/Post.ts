@@ -5,4 +5,6 @@ export interface Post {
   category_id: number;
   image?: string;
   created_at: string;
+  category_name?: string;
+  category_slug?: string;
 }
