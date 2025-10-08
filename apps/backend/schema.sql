@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS categories (
     slug TEXT NOT NULL UNIQUE
 );
 
-CREATE VIEW posts_with_categories AS
+CREATE VIEW IF NOT EXISTS posts_with_categories AS
 SELECT 
   posts.id,
   posts.title,

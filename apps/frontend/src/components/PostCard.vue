@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import type { Post } from '@/types/Post';
+import { marked } from 'marked';
 
 const props = defineProps<Post>();
+
+const content = marked.parse(props.content);
 </script>
 
 <template>
@@ -25,9 +28,7 @@ const props = defineProps<Post>();
             {{ props.title }}
           </h2>
           <!-- Content -->
-          <p class="text-sm text-gray-700 line-clamp-3">
-            {{ props.content }}
-          </p>
+          <p v-html="content" class="text-sm text-gray-700 line-clamp-3"></p>
         </div>
       </template>
 

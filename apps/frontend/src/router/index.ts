@@ -1,3 +1,5 @@
+import DashboardMainPanel from '@/components/admin/DashboardMainPanel.vue';
+import DashboardPostPanel from '@/components/admin/DashboardPostPanel.vue';
 import AdminPage from '@/views/AdminPage.vue';
 import ErrorPage from '@/views/ErrorPage.vue';
 import HomePage from '@/views/HomePage.vue';
@@ -22,6 +24,17 @@ const router = createRouter({
       path: '/admin',
       name: 'Admin',
       component: AdminPage,
+      children: [
+        {
+          path: '',
+          component: DashboardMainPanel,
+          name: 'Main',
+        },
+        {
+          path: 'posts',
+          component: DashboardPostPanel,
+        },
+      ],
     },
     //Page not found component
     {
