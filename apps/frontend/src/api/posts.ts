@@ -19,3 +19,8 @@ export const createPost = async (post: Omit<Post, 'id'>): Promise<Post> => {
 export const deletePost = async (id: number): Promise<void> => {
   await api.delete(`/posts/${id}`);
 };
+
+export const updatePost = async (id: number, post: Partial<Post>): Promise<Post> => {
+  const res = await api.patch(`/posts/${id}`, post);
+  return res.data;
+};

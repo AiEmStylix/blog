@@ -22,7 +22,7 @@ const content = marked.parse(props.content);
           <span
             class="inline-block px-2 py-0.5 rounded-full text-xs font-medium bg-green-600 text-white w-fit"
           >
-            {{ props.category_id }}
+            {{ props.category_name }}
           </span>
           <h2 class="text-lg font-semibold leading-snug line-clamp-2">
             {{ props.title }}

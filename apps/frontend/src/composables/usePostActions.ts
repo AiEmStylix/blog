@@ -41,10 +41,6 @@ export function usePostActions(options?: {
         color: 'error',
         onSelect: () => {
           options?.onDelete?.(row.original);
-          toast.add({
-            title: 'Customer deleted',
-            description: 'The customer has been deleted.',
-          });
         },
       },
     ];

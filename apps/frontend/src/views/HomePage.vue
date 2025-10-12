@@ -38,6 +38,7 @@ onMounted(async () => {
         :id="post.id"
         :title="post.title"
         :content="post.content"
+        :category_name="post.category_name"
         :category_id="post.category_id"
         :created_at="post.created_at"
         :image="post.image"

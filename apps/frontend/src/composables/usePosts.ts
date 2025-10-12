@@ -12,7 +12,14 @@ export const usePosts = () => {
 
   const loadPosts = async () => {
     if (!loaded.value) {
-      posts.value = await fetchPosts();
+      const data = await fetchPosts();
+      console.log(data);
+      posts.value = data.map((post) => ({
+        ...post,
+        created_at: new Date(post.created_at + 'Z').toLocaleString('en-GB', {
+          timeZone: 'Asia/Ho_Chi_Minh',
+        }),
+      }));
       loaded.value = true;
     }
   };

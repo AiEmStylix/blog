@@ -2,19 +2,15 @@
 import type { Post } from '@/types/Post';
 import type { TableColumn } from '@nuxt/ui';
 import { useToast } from '@nuxt/ui/runtime/composables/useToast.js';
-import { h, reactive, ref, resolveComponent, watch } from 'vue';
+import { h, onMounted, reactive, ref, resolveComponent, watch } from 'vue';
 import RowActions from '../RowActions.vue';
 import * as v from 'valibot';
+import { deletePost, fetchPosts } from '@/api/posts';
 
 const toast = useToast();
 
 const showModal = ref(false);
 const selectedPost = ref<Post>();
-
-function displayModal(post: Post) {
-  showModal.value = true;
-  selectedPost.value = post;
-}
 
 const formSchema = v.object({
   id: v.optional(v.number()),
@@ -27,56 +23,13 @@ type Schema = v.InferOutput<typeof formSchema>;
 
 const formState = reactive<Partial<Schema>>({});
 
-const data = ref<Post[]>([
-  {
-    id: 1,
-    title: 'Getting Started with Markdown',
-    content: '# Markdown Feature Showcase...',
-    category_id: 1,
-    created_at: '2025-09-28 18:39:23',
-  },
-  {
-    id: 2,
-    title: 'Vue 3 Composition API Basics',
-    content: 'Learn how to use Vue 3 Composition API...',
-    category_id: 2,
-    created_at: '2025-09-29 10:15:00',
-  },
-  {
-    id: 3,
-    title: 'Understanding REST APIs',
-    content: 'A REST API (Representational State Transfer)...',
-    category_id: 3,
-    created_at: '2025-09-30 14:42:10',
-  },
-  {
-    id: 4,
-    title: 'JavaScript ES6 Features',
-    content: 'ES6 introduced many features like...',
-    category_id: 1,
-    created_at: '2025-10-01 09:30:45',
-  },
-  {
-    id: 5,
-    title: 'Intro to Databases with SQL',
-    content: 'SQL (Structured Query Language) is used to manage relational databases...',
-    category_id: 4,
-    created_at: '2025-10-01 16:22:05',
-  },
-  {
-    id: 6,
-    title: 'Getting Productive with Git',
-    content: 'Git is a distributed version control system...',
-    category_id: 5,
-    created_at: '2025-10-02 08:55:12',
-  },
-]);
+const data = ref<Post[]>([]);
 
 const columns: TableColumn<Post>[] = [
   {
     accessorKey: 'id',
     header: '#',
-    cell: ({ row }) => `#${row.original.id}`,
+    cell: ({ row }) => `${row.original.id}`,
   },
   {
     accessorKey: 'title',
@@ -84,18 +37,18 @@ const columns: TableColumn<Post>[] = [
     cell: ({ row }) => `${row.original.title}`,
   },
   {
-    accessorKey: 'category_id',
+    accessorKey: 'category',
     header: 'Category',
-    cell: ({ row }) => `${row.getValue('category_id')}`,
+    cell: ({ row }) => `${row.original.category_name}`,
   },
   {
     accessorKey: 'created_at',
     header: 'Created',
-    cell: ({ row }) => `${row.getValue('created_at')}`,
+    cell: ({ row }) => `${row.original.created_at}`,
   },
   {
     id: 'actions',
-    cell: ({ row }) => h(RowActions, { row, onView: displayModal }),
+    cell: ({ row }) => h(RowActions, { row, onEdit: displayModal, onDelete: handleDelete }),
   },
 ];
 
@@ -108,7 +61,7 @@ watch(selectedPost, (post) => {
   }
 });
 
-function handleSubmit() {
+const handleSubmit = () => {
   if (!formState.id) return;
 
   const index = data.value.findIndex((p) => p.id === formState.id);
@@ -130,7 +83,30 @@ function handleSubmit() {
   //Close the modal
 
   showModal.value = false;
-}
+};
+
+const displayModal = (post: Post) => {
+  showModal.value = true;
+  selectedPost.value = post;
+};
+
+const handleDelete = (post: Post) => {
+  const index = data.value.findIndex((p) => p.id === post.id);
+
+  if (index !== -1) {
+    deletePost(post.id);
+    data.value.splice(index, 1);
+
+    toast.add({
+      title: 'Post deleted',
+      description: `Successfully deleted post #${post.id}`,
+    });
+  }
+};
+
+onMounted(async () => {
+  data.value = await fetchPosts();
+});
 </script>
 
 <template>

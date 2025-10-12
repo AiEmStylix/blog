@@ -1,9 +1,11 @@
 import DashboardMainPanel from '@/components/admin/DashboardMainPanel.vue';
+import DashboardNewPost from '@/components/admin/DashboardNewPost.vue';
 import DashboardPostPanel from '@/components/admin/DashboardPostPanel.vue';
 import AdminPage from '@/views/AdminPage.vue';
 import ErrorPage from '@/views/ErrorPage.vue';
 import HomePage from '@/views/HomePage.vue';
 import PostDetails from '@/views/PostDetails.vue';
+import path from 'path';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
@@ -33,6 +35,12 @@ const router = createRouter({
         {
           path: 'posts',
           component: DashboardPostPanel,
+          name: 'Posts',
+        },
+        {
+          path: 'posts/create',
+          component: DashboardNewPost,
+          name: 'CreatePosts',
         },
       ],
     },
