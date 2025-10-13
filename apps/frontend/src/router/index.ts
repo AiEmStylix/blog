@@ -5,7 +5,6 @@ import AdminPage from '@/views/AdminPage.vue';
 import ErrorPage from '@/views/ErrorPage.vue';
 import HomePage from '@/views/HomePage.vue';
 import PostDetails from '@/views/PostDetails.vue';
-import path from 'path';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
