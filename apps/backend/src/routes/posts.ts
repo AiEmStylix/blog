@@ -34,11 +34,9 @@ router.post('/', (req: Request, res: Response, next: NextFunction) => {
 
 router.get('/', (req: Request, res: Response, next: NextFunction) => {
   try {
-    const stmt = db.prepare('SELECT * FROM posts ORDER BY title');
+    const stmt = db.prepare('SELECT * FROM posts_with_categories ORDER BY title');
     const posts = stmt.all() as Post[];
-    res.status(201).json({
-      posts,
-    });
+    res.status(201).json(posts);
   } catch (error) {
     next(error);
   }
@@ -47,11 +45,9 @@ router.get('/', (req: Request, res: Response, next: NextFunction) => {
 router.get('/:id', (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = Number(req.params.id);
-    const stmt = db.prepare('SELECT * FROM posts WHERE id = ?');
+    const stmt = db.prepare('SELECT * FROM posts_with_categories WHERE id = ?');
     const post = stmt.get(id) as Post;
-    res.status(201).json({
-      post,
-    });
+    res.status(201).json(post);
   } catch (error) {
     next(error);
   }

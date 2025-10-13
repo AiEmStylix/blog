@@ -3,10 +3,12 @@ packages:
   - packages/*
 
 ignoredBuiltDependencies:
-  - "@prisma/engines"
+  - '@prisma/engines'
   - esbuild
   - prisma
 
 onlyBuiltDependencies:
+  - '@tailwindcss/oxide'
   - bcrypt
   - better-sqlite3
+  - vue-demi

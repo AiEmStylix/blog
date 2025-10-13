@@ -2,8 +2,11 @@
   "name": "blog-monorepo",
   "private": true,
   "scripts": {
+    "build": "pnpm -r build",
     "dev:frontend": "pnpm --filter frontend dev",
     "dev:backend": "pnpm --filter backend dev",
-    "dev": "pnpm -r dev"
+    "dev": "pnpm -r dev",
+    "start": "pnpm --filter backend start",
+    "start:dev": "pnpm --filter backend start:dev"
   }
 }

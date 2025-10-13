@@ -1,11 +1,24 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { RouterView, useRoute } from 'vue-router';
+import Footer from './components/Footer.vue';
+import { computed } from 'vue';
+
+const route = useRoute();
+
+const showFooter = computed(() => !route.path.startsWith('/admin'));
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <UApp>
+    <UMain>
+      <RouterView />
+    </UMain>
+    <UFooter v-if="showFooter">
+      <template #default>
+        <Footer />
+      </template>
+    </UFooter>
+  </UApp>
 </template>
 
 <style scoped></style>
