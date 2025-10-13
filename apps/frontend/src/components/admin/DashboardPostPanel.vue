@@ -2,10 +2,12 @@
 import type { Post } from '@/types/Post';
 import type { TableColumn } from '@nuxt/ui';
 import { useToast } from '@nuxt/ui/runtime/composables/useToast.js';
-import { h, onMounted, reactive, ref, resolveComponent, watch } from 'vue';
+import { computed, h, onMounted, reactive, ref, resolveComponent, watch } from 'vue';
 import RowActions from '../RowActions.vue';
 import * as v from 'valibot';
 import { deletePost, fetchPosts } from '@/api/posts';
+import DOMPurify from 'isomorphic-dompurify';
+import { marked } from 'marked';
 
 const toast = useToast();
 
@@ -107,6 +109,11 @@ const handleDelete = (post: Post) => {
 onMounted(async () => {
   data.value = await fetchPosts();
 });
+
+const markdown = computed(() => {
+  if (!formState.content) return '';
+  return DOMPurify.sanitize(marked.parse(formState.content) as string);
+});
 </script>
 
 <template>
@@ -133,9 +140,20 @@ onMounted(async () => {
         <UFormField label="Title">
           <UInput class="w-full" v-model="formState.title" />
         </UFormField>
-        <UFormField label="Content">
-          <UTextarea class="w-full" v-model="formState.content" autoresize />
-        </UFormField>
+
+        <div class="grid grid-cols-2 gap-4">
+          <UFormField label="Content">
+            <UTextarea class="w-full" v-model="formState.content" autoresize />
+          </UFormField>
+
+          <!-- Preview -->
+          <UFormField label="Preview">
+            <div
+              class="break-normal md:break-all w-full h-[33rem] rounded-md border border-gray-300 bg-gray-50 text-gray-900 p-2 overflow-auto font-sans prose max-w-none"
+              v-html="markdown"
+            ></div>
+          </UFormField>
+        </div>
         <UFormField :label="`Created At: ${selectedPost?.created_at}`"></UFormField>
       </UForm>
     </template>
