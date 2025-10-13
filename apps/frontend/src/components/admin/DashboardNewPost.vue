@@ -7,15 +7,12 @@ import { marked } from 'marked';
 import { computed, onMounted, reactive, ref } from 'vue';
 import DOMPurify from 'isomorphic-dompurify';
 
-const formState = reactive<{
-  title: string;
-  content: string;
-  category_id?: string | number;
-}>({
+const formState = ref({
   title: '',
   content: '',
-  category_id: undefined,
+  category_id: undefined as string | number | undefined,
 });
+
 const toast = useToast();
 
 const items = ref<SelectMenuItem[]>([]);
@@ -33,19 +30,19 @@ onMounted(async () => {
   await fetchSelectItems();
 });
 
-const html = computed(() => DOMPurify.sanitize(marked.parse(formState.content) as string));
+const html = computed(() => DOMPurify.sanitize(marked.parse(formState.value.content) as string));
 
 const handleSubmit = async () => {
   try {
-    if (!formState.title || !formState.content || !formState.category_id) {
+    if (!formState.value.title || !formState.value.content || !formState.value.category_id) {
       toast.add({ title: 'Please fill in all required fields' });
       return;
     }
 
     const newPost = {
-      title: formState.title,
-      content: formState.content,
-      category_id: Number(formState.category_id),
+      title: formState.value.title,
+      content: formState.value.content,
+      category_id: Number(formState.value.category_id),
     };
 
     await createPost(newPost);
@@ -53,9 +50,9 @@ const handleSubmit = async () => {
     toast.add({ title: 'Post created successfully!' });
 
     //Reset form
-    formState.title = '';
-    formState.content = '';
-    formState.category_id = undefined;
+    formState.value.title = '';
+    formState.value.content = '';
+    formState.value.category_id = undefined;
   } catch (error) {
     console.error(error);
     toast.add({ title: 'Failed to create post', color: 'error' });
