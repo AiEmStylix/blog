@@ -4,18 +4,24 @@ import { createPost } from '@/api/posts';
 import type { SelectMenuItem } from '@nuxt/ui';
 import { useToast } from '@nuxt/ui/runtime/composables/useToast.js';
 import { marked } from 'marked';
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, ref, shallowRef } from 'vue';
 import DOMPurify from 'isomorphic-dompurify';
 
-const formState = ref({
+interface FormState {
+  title: string;
+  content: string;
+  category_id?: string | number;
+}
+
+const formState = ref<FormState>({
   title: '',
   content: '',
-  category_id: undefined as string | number | undefined,
+  category_id: undefined,
 });
 
 const toast = useToast();
 
-const items = ref<SelectMenuItem[]>([]);
+const items = shallowRef<SelectMenuItem[]>([]);
 
 const fetchSelectItems = async () => {
   const categories = await fetchCategories();
@@ -30,8 +36,10 @@ onMounted(async () => {
   await fetchSelectItems();
 });
 
-const html = computed(() => DOMPurify.sanitize(marked.parse(formState.value.content) as string));
-
+const html = computed(() => {
+  const parsed = marked.parse(formState.value.content);
+  return DOMPurify.sanitize(parsed as string);
+});
 const handleSubmit = async () => {
   try {
     if (!formState.value.title || !formState.value.content || !formState.value.category_id) {
