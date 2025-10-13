@@ -7,12 +7,15 @@ import { marked } from 'marked';
 import { computed, onMounted, reactive, ref } from 'vue';
 import DOMPurify from 'isomorphic-dompurify';
 
-const formState = reactive({
+const formState = reactive<{
+  title: string;
+  content: string;
+  category_id?: string | number;
+}>({
   title: '',
   content: '',
   category_id: undefined,
 });
-
 const toast = useToast();
 
 const items = ref<SelectMenuItem[]>([]);
@@ -42,7 +45,7 @@ const handleSubmit = async () => {
     const newPost = {
       title: formState.title,
       content: formState.content,
-      category_id: formState.category_id,
+      category_id: Number(formState.category_id),
     };
 
     await createPost(newPost);
