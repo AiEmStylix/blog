@@ -3,3 +3,5 @@ node_modules
 blog.db*
 .vscode
 .env
+.env.keys
+dist

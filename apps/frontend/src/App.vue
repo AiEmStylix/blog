@@ -1,14 +1,23 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router';
+import { RouterView, useRoute } from 'vue-router';
 import Footer from './components/Footer.vue';
+import { computed } from 'vue';
+
+const route = useRoute();
+
+const showFooter = computed(() => !route.path.startsWith('/admin'));
 </script>
 
 <template>
   <UApp>
-    <div class="flex flex-col min-h-screen">
-      <RouterView class="flex-1" />
-      <Footer class="shrink-0"></Footer>
-    </div>
+    <UMain>
+      <RouterView />
+    </UMain>
+    <UFooter v-if="showFooter">
+      <template #default>
+        <Footer />
+      </template>
+    </UFooter>
   </UApp>
 </template>
 

@@ -32,7 +32,7 @@ onMounted(async () => {
         <h1 class="text-bold text-2xl">{{ post?.title }}</h1>
         <div class="space-y-3">
           <p>{{ post?.created_at }}</p>
-          <UBadge>{{ post?.category_id }}</UBadge>
+          <UBadge>{{ post?.category_name }}</UBadge>
         </div>
         <USeparator class="mb-4" />
 
