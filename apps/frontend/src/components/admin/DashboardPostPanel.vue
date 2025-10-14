@@ -52,7 +52,7 @@ const columns: TableColumn<Post>[] = [
   },
   {
     id: 'actions',
-    cell: ({ row }) => h(RowActions, { row, onEdit: displayModal, onDelete: handleDelete }),
+    cell: ({ row }) => h(RowActions<Post>, { row, onEdit: displayModal, onDelete: handleDelete }),
   },
 ];
 
@@ -85,7 +85,6 @@ const handleSubmit = () => {
   }
 
   //Close the modal
-
   showModal.value = false;
 };
 
@@ -94,11 +93,11 @@ const displayModal = (post: Post) => {
   selectedPost.value = post;
 };
 
-const handleDelete = (post: Post) => {
+const handleDelete = async (post: Post) => {
   const index = data.value.findIndex((p) => p.id === post.id);
 
   if (index !== -1) {
-    deletePost(post.id);
+    await deletePost(post.id);
     data.value.splice(index, 1);
 
     toast.add({
