@@ -34,7 +34,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const categories = await sql<Category[]>`
-    SELECT * FROM categories ORDER BY name`;
+    SELECT * FROM categories ORDER BY Id`;
 
     res.json(categories);
   } catch (error) {
