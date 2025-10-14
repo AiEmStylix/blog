@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import type { NavigationMenuChildItem, NavigationMenuItem } from '@nuxt/ui';
 import { ref } from 'vue';
-import { useRoute } from 'vue-router';
-
-const route = useRoute();
 
 const open = ref(false);
 
@@ -41,6 +38,7 @@ const links = [
   {
     label: 'Categories',
     icon: 'i-mdi:tag',
+    to: '/admin/categories',
     onSelect: () => {
       open.value = false;
     },
@@ -53,8 +51,8 @@ const links = [
 ] satisfies NavigationMenuItem[];
 </script>
 <template>
-  <UDashboardGroup unit="rem">
-    <UDashboardSidebar>
+  <UDashboardGroup unit="rem" storage="local">
+    <UDashboardSidebar collapsible resizable>
       <template #default="{ collapsed }">
         <UDashboardSearchButton :collapsed="collapsed" class="bg-transparent ring-default" />
 

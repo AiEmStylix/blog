@@ -1,22 +1,22 @@
-<script setup lang="ts">
-import { usePostActions } from '@/composables/usePostActions';
+<script setup lang="ts" generic="T">
+import { useRowActions } from '@/composables/useRowActions';
 import type { Post } from '@/types/Post';
 import type { TableRow } from '@nuxt/ui';
 
 const props = defineProps<{
-  row: TableRow<Post>;
+  row: TableRow<T>;
 }>();
 
 const emit = defineEmits<{
-  (e: 'view', post: Post): void;
-  (e: 'edit', post: Post): void;
-  (e: 'delete', post: Post): void;
+  (e: 'view', item: T): void;
+  (e: 'edit', item: T): void;
+  (e: 'delete', item: T): void;
 }>();
 
-const { getRowItems } = usePostActions({
-  onEdit: (post) => emit('edit', post),
-  onView: (post) => emit('view', post),
-  onDelete: (post) => emit('delete', post),
+const { getRowItems } = useRowActions<T>({
+  onEdit: (item) => emit('edit', item),
+  onView: (item) => emit('view', item),
+  onDelete: (item) => emit('delete', item),
 });
 </script>
 
