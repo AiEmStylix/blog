@@ -8,8 +8,10 @@ import * as v from 'valibot';
 import { deletePost, fetchPosts } from '@/api/posts';
 import DOMPurify from 'isomorphic-dompurify';
 import { marked } from 'marked';
+import { usePosts } from '@/composables/usePosts';
 
 const toast = useToast();
+const { posts, loadPosts } = usePosts();
 
 const showModal = ref(false);
 const selectedPost = ref<Post>();
@@ -107,7 +109,8 @@ const handleDelete = (post: Post) => {
 };
 
 onMounted(async () => {
-  data.value = await fetchPosts();
+  await loadPosts();
+  data.value = posts.value;
 });
 
 const markdown = computed(() => {

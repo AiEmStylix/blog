@@ -26,7 +26,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const posts = await sql`SELECT * FROM posts_with_category ORDER BY title`;
+    const posts = await sql`SELECT * FROM posts_with_category ORDER BY id`;
     res.status(201).json(posts);
   } catch (error) {
     next(error);
