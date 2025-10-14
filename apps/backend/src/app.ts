@@ -7,7 +7,6 @@ const app = express();
 
 app.use(express.json());
 app.use('/api', mainRouter);
-console.log(process.env.NODE_ENV);
 
 if (process.env.NODE_ENV === 'production') {
   const staticPath = path.resolve(__dirname, '../../../frontend/dist');

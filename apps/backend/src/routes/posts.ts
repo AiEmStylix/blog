@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import db from '../database/db';
+import sql from '../database/db';
 
 const router = Router();
 
@@ -10,50 +10,40 @@ interface Post {
   category_id: number;
 }
 
-router.post('/', (req: Request, res: Response, next: NextFunction) => {
+router.post('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const body = req.body as Post;
-    const stmt = db.prepare('INSERT INTO posts (title, content, category_id) VALUES (?, ?,?)');
 
-    const result = stmt.run(body.title, body.content ?? null, body.category_id);
-
-    const insertedPost: Post = {
-      id: Number(result.lastInsertRowid),
-      title: body.title,
-      content: body.content ?? null,
-      category_id: body.category_id,
-    };
-
-    res.status(201).json({
-      insertedPost,
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.get('/', (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const stmt = db.prepare('SELECT * FROM posts_with_categories ORDER BY title');
-    const posts = stmt.all() as Post[];
-    res.status(201).json(posts);
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.get('/:id', (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const id = Number(req.params.id);
-    const stmt = db.prepare('SELECT * FROM posts_with_categories WHERE id = ?');
-    const post = stmt.get(id) as Post;
+    const [post] = await sql`
+      INSERT INTO posts ${sql(body, ['title', 'content', 'category_id'])} 
+      RETURNING *
+    `;
     res.status(201).json(post);
   } catch (error) {
     next(error);
   }
 });
 
-router.patch('/:id', (req: Request, res: Response, next: NextFunction) => {
+router.get('/', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const posts = await sql`SELECT * FROM posts_with_category ORDER BY title`;
+    res.status(201).json(posts);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = Number(req.params.id);
+    const post = await sql`SELECT * FROM posts_with_category WHERE id = ${id}`;
+    res.status(201).json(post);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.patch('/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = Number(req.params.id);
 
@@ -62,51 +52,31 @@ router.patch('/:id', (req: Request, res: Response, next: NextFunction) => {
     }
 
     //Check if posts exists
-
-    const stmt = db.prepare('SELECT * FROM posts WHERE Id = ?');
-    const post = stmt.get(id) as Post;
+    const [post] = await sql`SELECT * FROM posts WHERE Id = ${id}`;
 
     if (!post) {
       return res.status(400).json({ error: 'Post not found' });
     }
 
-    const { title, content, category_id } = req.body as Partial<Post>;
+    const body = req.body as Partial<Post>;
+    type UpdatableField = 'title' | 'content' | 'category_id';
+    const allowedFields: UpdatableField[] = ['title', 'content', 'category_id'];
 
-    //Building dynamic querry
-    const fields: string[] = [];
-    const values: any[] = [];
+    const fieldsToUpdate = allowedFields.filter((field) => field in body);
 
-    if (title !== undefined) {
-      fields.push('title = ?');
-      values.push(title);
+    if (fieldsToUpdate.length === 0) {
+      return res.status(400).json({ error: 'No valid fields to update' });
     }
 
-    if (content !== undefined) {
-      fields.push('content = ?');
-      values.push(content);
-    }
+    const updated = sql(`UPDATE posts SET ${sql(body, fieldsToUpdate)} WHERE id = ?`);
 
-    if (category_id !== undefined) {
-      fields.push('category_id = ?');
-      values.push(category_id);
-    }
-
-    if (fields.length === 0) {
-      return res.status(400).json({ error: 'No fields to update' });
-    }
-
-    const updateStmt = db.prepare(`UPDATE posts SET ${fields.join(', ')} WHERE id = ?`);
-    updateStmt.run(...values, id);
-
-    const updatedPost = stmt.get(id) as Post;
-
-    res.status(200).json({ updatedPost });
+    res.status(200).json(updated);
   } catch (error) {
     next(error);
   }
 });
 
-router.delete('/:id', (req: Request, res: Response, next: NextFunction) => {
+router.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = Number(req.params.id);
 
@@ -114,10 +84,9 @@ router.delete('/:id', (req: Request, res: Response, next: NextFunction) => {
       return res.status(400).json({ error: 'Invalid post id' });
     }
 
-    const stmt = db.prepare('DELETE FROM posts WHERE id = ?');
-    const result = stmt.run(id);
+    const deleted = await sql`DELETE FROM posts WHERE id = ${id}`;
 
-    if (result.changes === 0) {
+    if (deleted.count === 0) {
       return res.status(404).json({ error: 'Category not found' });
     }
 
