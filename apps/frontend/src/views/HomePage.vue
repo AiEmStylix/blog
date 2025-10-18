@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import { fetchPosts } from '@/api/posts';
 import PostCard from '@/components/PostCard.vue';
 import ProfileCard from '@/components/ProfileCard.vue';
 import { usePosts } from '@/composables/usePosts';
-
-import type { Post } from '@/types/Post';
 import { onMounted, ref } from 'vue';
 
 const { paginatedPosts, currentPage, pageSize, posts, loadPosts } = usePosts();
@@ -46,7 +43,7 @@ onMounted(async () => {
     </div>
 
     <!-- Pagination -->
-    <div class="flex justify-center mt-6">
+    <div v-if="posts" class="flex justify-center mt-6">
       <UPagination v-model:page="currentPage" :itemsPerPage="pageSize" :total="posts.length" />
     </div>
   </div>

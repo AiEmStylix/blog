@@ -5,6 +5,7 @@ import type { TableColumn } from '@nuxt/ui';
 import { h, onMounted, ref } from 'vue';
 import RowActions from '../RowActions.vue';
 import { useToast } from '@nuxt/ui/runtime/composables/useToast.js';
+import { getPaginationRowModel } from '@tanstack/vue-table';
 
 const toast = useToast();
 
@@ -26,7 +27,7 @@ const columns: TableColumn<Category>[] = [
   },
   {
     id: 'actions',
-    header: 'Actions',
+
     cell: ({ row }) => h(RowActions<Category>, { row, onEdit: handleEdit, onDelete: handleDelete }),
   },
 ];
@@ -60,6 +61,11 @@ const loadCategories = async () => {
   const fetchData = await fetchCategories();
   data.value = fetchData;
 };
+
+const pagination = ref({
+  pageIndex: 0,
+  pageSize: 5,
+});
 </script>
 
 <template>
