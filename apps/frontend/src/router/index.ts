@@ -1,6 +1,5 @@
 import DashboardCategory from '@/components/admin/DashboardCategory.vue';
 import DashboardMainPanel from '@/components/admin/DashboardMainPanel.vue';
-import DashboardNewPost from '@/components/admin/DashboardNewPost.vue';
 import DashboardPostPanel from '@/components/admin/DashboardPostPanel.vue';
 import AdminPage from '@/views/AdminPage.vue';
 import ErrorPage from '@/views/ErrorPage.vue';
@@ -38,11 +37,7 @@ const router = createRouter({
           component: DashboardPostPanel,
           name: 'Posts',
         },
-        {
-          path: 'posts/create',
-          component: DashboardNewPost,
-          name: 'CreatePosts',
-        },
+
         {
           path: 'categories',
           component: DashboardCategory,

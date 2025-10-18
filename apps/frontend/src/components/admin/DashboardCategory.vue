@@ -55,6 +55,11 @@ onMounted(async () => {
   const fetchData = await fetchCategories();
   data.value = fetchData;
 });
+
+const loadCategories = async () => {
+  const fetchData = await fetchCategories();
+  data.value = fetchData;
+};
 </script>
 
 <template>
@@ -63,6 +68,10 @@ onMounted(async () => {
       <UDashboardNavbar title="Category">
         <template #leading>
           <UDashboardSidebarCollapse />
+        </template>
+
+        <template #right>
+          <CategoryAddModel @created="loadCategories" />
         </template>
       </UDashboardNavbar>
     </template>

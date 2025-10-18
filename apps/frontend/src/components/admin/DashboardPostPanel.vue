@@ -9,6 +9,7 @@ import { deletePost, fetchPosts } from '@/api/posts';
 import DOMPurify from 'isomorphic-dompurify';
 import { marked } from 'marked';
 import { usePosts } from '@/composables/usePosts';
+import router from '@/router';
 
 const toast = useToast();
 const { posts, loadPosts } = usePosts();
@@ -93,6 +94,10 @@ const displayModal = (post: Post) => {
   selectedPost.value = post;
 };
 
+const handleView = (post: Post) => {
+  router.push(`/posts/${post.id}`);
+};
+
 const handleDelete = async (post: Post) => {
   const index = data.value.findIndex((p) => p.id === post.id);
 
@@ -125,16 +130,21 @@ const markdown = computed(() => {
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>
+
+        <template #right>
+          <PostAddModal />
+        </template>
       </UDashboardNavbar>
     </template>
 
     <template #body>
       <div class="flex flex-wrap flex-col items-center justify-between gap-1.5">
-        <UTable class="w-full shrink-0" :data="data" :columns="columns" />
+        <UTable :data="data" :columns="columns" />
       </div>
     </template>
   </UDashboardPanel>
 
+  <!-- Edit post modal -->
   <UModal fullscreen v-model:open="showModal" title="Edit post" :ui="{ footer: 'justify-end' }">
     <template #body>
       <UForm :schema="formSchema" :state="formState" class="space-y-4">

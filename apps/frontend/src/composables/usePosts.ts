@@ -13,14 +13,11 @@ export const usePosts = () => {
   const loadPosts = async () => {
     if (!loaded.value) {
       const data = await fetchPosts();
-      console.log('New Values' + data
-      );
       posts.value = data.map((post) => ({
         ...post,
         created_at: post.created_at ? new Date(post.created_at).toLocaleString() : undefined,
       }));
       loaded.value = true;
-      console.log(posts.value);
     }
   };
 

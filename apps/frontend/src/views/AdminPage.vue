@@ -20,20 +20,7 @@ const links = [
     onSelect: () => {
       open.value = false;
     },
-    type: 'trigger',
-    defaultOpen: true,
-    children: [
-      {
-        label: 'All Posts',
-        icon: 'i-mdi:book-open-blank-variant-outline',
-        to: '/admin/posts',
-      },
-      {
-        label: 'New Post',
-        icon: 'i-mdi:typewriter',
-        to: '/admin/posts/create',
-      },
-    ],
+    to: '/admin/posts',
   },
   {
     label: 'Categories',

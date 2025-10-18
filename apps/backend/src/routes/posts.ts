@@ -34,9 +34,9 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 });
 
 router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+  const id = Number(req.params.id);
   try {
-    const id = Number(req.params.id);
-    const post = await sql`SELECT * FROM posts_with_category WHERE id = ${id}`;
+    const [post] = await sql`SELECT * FROM posts_with_category WHERE id = ${id}`;
     res.status(201).json(post);
   } catch (error) {
     next(error);

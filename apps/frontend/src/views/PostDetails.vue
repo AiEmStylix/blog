@@ -16,6 +16,13 @@ const post = ref<Post>();
 
 const content = ref('');
 
+const formatDate = (date: string | null | undefined) => {
+  if (!date) {
+    return 'Date not available';
+  }
+  return new Date(date).toLocaleString();
+};
+
 onMounted(async () => {
   post.value = await getPostsById(props.id);
   content.value = DOMPurify.sanitize(marked.parse(post.value.content || '') as string);
@@ -28,15 +35,18 @@ onMounted(async () => {
       <UButton icon="i-mdi-arrow-left" variant="ghost" to="/" class="p-4">Home</UButton>
     </header>
     <div class="mt-3 flex justify-center items-center flex-col">
-      <article class="flex justify-center flex-col gap-3 p-8">
-        <h1 class="text-bold text-2xl">{{ post?.title }}</h1>
+      <div v-if="!post">
+        <p>Loading post...</p>
+      </div>
+      <article v-else class="flex justify-center flex-col gap-3 p-8">
+        <h1 class="text-bold text-2xl">{{ post.title }}</h1>
         <div class="space-y-3">
-          <p>{{ post?.created_at }}</p>
-          <UBadge>{{ post?.category_name }}</UBadge>
+          <p>{{ formatDate(post.created_at) }}</p>
+          <UBadge>{{ post.category_name }}</UBadge>
         </div>
         <USeparator class="mb-4" />
 
-        <div v-html="content" class="prose max-w-full dark:prose-invert"></div>
+        <div v-if="content" v-html="content" class="prose max-w-full dark:prose-invert"></div>
       </article>
     </div>
   </main>
