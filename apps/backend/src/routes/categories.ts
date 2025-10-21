@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import db from '../database/db';
+import db from '../libs/db';
 import slugify from '@sindresorhus/slugify';
-import sql from '../database/db';
+import sql from '../libs/db';
 
 const router = Router();
 
