@@ -1,15 +1,32 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import type { Post } from '../types/Post.type';
 import { PostModel } from '../models/Post.model';
+import { z } from 'zod';
+
+const createPostSchema = z.object({
+  title: z
+    .string()
+    .min(1, { message: 'Title cannot be empty' })
+    .max(255, { message: 'Title too long' }),
+  content: z.string().min(1, { message: 'Content cannot be empty' }),
+  category_ids: z.array(z.number().int().positive(), {
+    message: 'Category IDs must be positive integers',
+  }),
+});
 
 export const createNewPost = async (req: Request, res: Response) => {
   try {
-    const { title, content, category_ids } = req.body as Partial<Post>;
-    if (!title || !content || !category_ids) {
-      return res.status(400).json({ message: 'Invalid fields' });
+    // Validate request body
+    const parsed = createPostSchema.safeParse(req.body);
+
+    if (!parsed.success) {
+      // Return all validation errors
+      return res.status(400).json({ message: 'Invalid fields', errors: parsed.error });
     }
 
-    const newPost = await PostModel.create(title, content, category_ids.map(Number));
+    const { title, content, category_ids } = parsed.data;
+
+    const newPost = await PostModel.create(title, content, category_ids);
     return res.status(201).json({ message: 'Post created successfully', newPost });
   } catch (error) {
     console.error('Error when calling createNewPost', error);

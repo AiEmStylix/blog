@@ -1,5 +1,4 @@
-import { Router, Request, Response, NextFunction } from 'express';
-import sql from '../libs/db';
+import { Router } from 'express';
 import {
   createNewPost,
   deletePost,
@@ -9,13 +8,6 @@ import {
 } from '../controllers/postController';
 
 const router = Router();
-
-interface Post {
-  id?: number;
-  title: string;
-  content?: string | null;
-  category_id: number;
-}
 
 router.post('/', createNewPost);
 

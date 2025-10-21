@@ -1,13 +1,13 @@
-import express, { Request, Response } from 'express';
-import mainRouter from './routes/index';
+import express from 'express';
 import { errorHandler } from './middleware/errorHandler';
-import path from 'path';
-import postRoutes from './routes/posts';
+import postsRoutes from './routes/posts';
+import categoriesRouter from './routes/categories';
 
 const app = express();
 
 app.use(express.json());
-app.use('/api/posts', postRoutes);
+app.use('/api/posts', postsRoutes);
+app.use('/api/categories', categoriesRouter);
 
 // if (process.env.NODE_ENV === 'production') {
 //   const staticPath = path.resolve(__dirname, '../../../frontend/dist');
