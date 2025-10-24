@@ -1,14 +1,23 @@
 import type { Post } from '@/types/Post.type';
 import api from './axios';
 
-type PostResponse = {
+type PostsResponse = {
   message: string;
   posts: Post[];
 };
 
+type PostResponse = {
+  message: string;
+  post: Post; // Single post, not array
+};
+
 export const PostApi = {
   getAll() {
-    return api.get<PostResponse>('/posts');
+    return api.get<PostsResponse>('/posts');
+  },
+
+  getById(id: number) {
+    return api.get<PostResponse>(`/posts/${id}`);
   },
 
   create(payload: { title: string; content: string; category_ids: number[] }) {
