@@ -15,6 +15,11 @@ const router = createRouter({
       component: () => import('@/views/PostDetail.vue'),
       props: true,
     },
+    {
+      path: '/admin',
+      name: 'AdminDashboard',
+      component: () => import('@/views/AdminDashboard.vue'),
+    },
   ],
 });
 
