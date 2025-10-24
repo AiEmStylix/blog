@@ -5,6 +5,7 @@ import { marked } from 'marked';
 import { computed, onMounted } from 'vue';
 const { post, loading, error, fetchPost } = usePost();
 import DOMPurify from 'isomorphic-dompurify';
+import Footer from '@/components/Footer.vue';
 
 const { id } = defineProps({
   id: String,
@@ -29,42 +30,46 @@ const markdownContent = computed(() => {
 });
 </script>
 <template>
-  <div>
-    <header class="container mx-auto sm:px-8 lg:px-16">
-      <div class="px-4 py-8 max-w-4xl mx-auto">
-        <UButton
-          to="/"
-          color="neutral"
-          variant="ghost"
-          icon="i-lucide-move-left"
-          size="sm"
-          label="Home"
-          class="-ml-2"
-        />
-      </div>
-    </header>
-    <main class="container mx-auto sm:px-8 lg:px-16">
-      <article class="px-4 py-8 max-w-4xl mx-auto">
-        <h1 class="font-bold text-3xl">{{ post?.title }}</h1>
-        <div class="my-4">
-          <div>
-            <time :datetime="post?.created_at">
-              {{ formatDate(post?.created_at || '') }}
-            </time>
-          </div>
-          <div class="mt-4 flex gap-2 flex-wrap">
-            <UBadge
-              variant="soft"
-              color="neutral"
-              v-for="category in post?.categories"
-              :key="category.id"
-              :label="category.name"
-            />
-          </div>
+  <div class="min-h-screen flex flex-col">
+    <div class="flex-1">
+      <header class="container mx-auto sm:px-8 lg:px-16">
+        <div class="px-4 py-8 max-w-4xl mx-auto">
+          <UButton
+            to="/"
+            color="neutral"
+            variant="ghost"
+            icon="i-lucide-move-left"
+            size="sm"
+            label="Home"
+            class="-ml-2"
+          />
         </div>
-        <USeparator class="my-4" />
-        <div v-html="markdownContent" class="prose prose-lg"></div>
-      </article>
-    </main>
+      </header>
+      <main class="container mx-auto sm:px-8 lg:px-16">
+        <article class="px-4 py-8 max-w-4xl mx-auto">
+          <h1 class="font-bold text-3xl">{{ post?.title }}</h1>
+          <div class="my-4">
+            <div>
+              <time :datetime="post?.created_at">
+                {{ formatDate(post?.created_at || '') }}
+              </time>
+            </div>
+            <div class="mt-4 flex gap-2 flex-wrap">
+              <UBadge
+                variant="soft"
+                color="neutral"
+                v-for="category in post?.categories"
+                :key="category.id"
+                :label="category.name"
+              />
+            </div>
+          </div>
+          <USeparator class="my-4" />
+          <div v-html="markdownContent" class="prose prose-lg"></div>
+        </article>
+      </main>
+    </div>
+
+    <Footer />
   </div>
 </template>

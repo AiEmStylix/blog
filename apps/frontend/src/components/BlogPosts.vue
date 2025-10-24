@@ -48,11 +48,11 @@ const formatDate = (dateString: string) => {
       </div>
 
       <!-- Separator column - full height of parent -->
-      <USeparator orientation="vertical" class="h-full self-stretch" />
+      <USeparator orientation="vertical" class="h-full" />
 
       <!-- Blog post column -->
       <UBlogPost
-        class="md:w-xl"
+        class="w-xl"
         :title="post.title"
         :description="post.content"
         :to="`/posts/${post.id}`"
