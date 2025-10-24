@@ -1,9 +1,9 @@
 <script setup lang="ts"></script>
 <template>
-  <div class="flex justify-center items-center flex-col gap-2">
+  <div class="flex justify-center items-center flex-col gap-2 l">
     <RouterLink to="/" class="flex flex-col items-center justify-center">
       <img src="/avatar.png" alt="" class="rounded-full w-[112px]" />
-      <h1 class="font-bold text-2xl">stylix.me</h1>
+      <h1 class="font-bold text-2xl">Stylix</h1>
     </RouterLink>
     <p>Blog xàm xí về cuộc sống và công nghệ của tôi</p>
 

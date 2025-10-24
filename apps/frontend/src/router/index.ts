@@ -1,10 +1,4 @@
-import DashboardMainPanel from '@/components/admin/DashboardMainPanel.vue';
-import DashboardNewPost from '@/components/admin/DashboardNewPost.vue';
-import DashboardPostPanel from '@/components/admin/DashboardPostPanel.vue';
-import AdminPage from '@/views/AdminPage.vue';
-import ErrorPage from '@/views/ErrorPage.vue';
 import HomePage from '@/views/HomePage.vue';
-import PostDetails from '@/views/PostDetails.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
@@ -12,41 +6,19 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'Home',
+      name: 'HomePage',
       component: HomePage,
     },
     {
       path: '/posts/:id',
-      name: 'PostDetails',
-      component: PostDetails,
+      name: 'PostDetail',
+      component: () => import('@/views/PostDetail.vue'),
       props: true,
     },
     {
       path: '/admin',
-      name: 'Admin',
-      component: AdminPage,
-      children: [
-        {
-          path: '',
-          component: DashboardMainPanel,
-          name: 'Main',
-        },
-        {
-          path: 'posts',
-          component: DashboardPostPanel,
-          name: 'Posts',
-        },
-        {
-          path: 'posts/create',
-          component: DashboardNewPost,
-          name: 'CreatePosts',
-        },
-      ],
-    },
-    //Page not found component
-    {
-      path: '/:pathMatch(.*)*',
-      component: ErrorPage,
+      name: 'AdminDashboard',
+      component: () => import('@/views/AdminDashboard.vue'),
     },
   ],
 });

@@ -1,26 +1,34 @@
-import type { Post } from '@/types/Post';
+import type { Post } from '@/types/Post.type';
 import api from './axios';
 
-export const fetchPosts = async (): Promise<Post[]> => {
-  const res = await api.get<Post[]>('/posts');
-  return res.data;
+type PostsResponse = {
+  message: string;
+  posts: Post[];
 };
 
-export const getPostsById = async (id: string) => {
-  const res = await api.get<Post>(`/posts/${id}`);
-  return res.data;
+type PostResponse = {
+  message: string;
+  post: Post; // Single post, not array
 };
 
-export const createPost = async (post: Omit<Post, 'id'>): Promise<Post> => {
-  const res = await api.post<Post>('/posts', post);
-  return res.data;
-};
+export const PostApi = {
+  getAll() {
+    return api.get<PostsResponse>('/posts');
+  },
 
-export const deletePost = async (id: number): Promise<void> => {
-  await api.delete(`/posts/${id}`);
-};
+  getById(id: number) {
+    return api.get<PostResponse>(`/posts/${id}`);
+  },
 
-export const updatePost = async (id: number, post: Partial<Post>): Promise<Post> => {
-  const res = await api.patch(`/posts/${id}`, post);
-  return res.data;
+  create(payload: { title: string; content: string; category_ids: number[] }) {
+    return api.post('/posts', payload);
+  },
+
+  upload(id: number, payload: any) {
+    return api.patch(`/posts/${id}`, payload);
+  },
+
+  delete(id: number) {
+    return api.delete(`/posts/${id}`);
+  },
 };
