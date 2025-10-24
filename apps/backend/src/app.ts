@@ -11,12 +11,12 @@ app.use('/api/posts', postsRoutes);
 app.use('/api/categories', categoriesRouter);
 
 if (process.env.NODE_ENV === 'production') {
-  const staticPath = path.resolve(__dirname, '../../frontend/dist');
+  const staticPath = path.resolve(__dirname, '../../../frontend/dist');
   console.log('🧱 Serving static from:', staticPath);
   app.use(express.static(staticPath));
 
   app.get(/.*/, (req: Request, res: Response) => {
-    const indexPath = path.resolve(__dirname, '../../frontend/dist/index.html');
+    const indexPath = path.resolve(__dirname, '../../../frontend/dist/index.html');
     res.sendFile(indexPath);
   });
 }
