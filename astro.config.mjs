@@ -3,7 +3,13 @@ import { defineConfig } from 'astro/config';
 
 import markdoc from '@astrojs/markdoc';
 
+import tailwindcss from '@tailwindcss/vite';
+
 // https://astro.build/config
 export default defineConfig({
-  integrations: [markdoc()]
+  integrations: [markdoc()],
+
+  vite: {
+    plugins: [tailwindcss()]
+  }
 });
