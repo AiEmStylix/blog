@@ -5,7 +5,6 @@ import markdoc from '@astrojs/markdoc';
 
 import tailwindcss from '@tailwindcss/vite';
 
-import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
@@ -15,5 +14,5 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
 
-  adapter: cloudflare()
+  output: 'static'
 });
