@@ -15,5 +15,6 @@ export default defineConfig({
   },
 
   output: 'static',
-  site: 'https://stylix.xyz'
+  site: 'https://stylix.xyz',
+  trailingSlash: 'never'
 });
