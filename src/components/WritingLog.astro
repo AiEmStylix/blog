@@ -1,0 +1,26 @@
+---
+import { getCollection } from "astro:content";
+
+const posts = await getCollection("blog");
+
+const latestPosts = posts
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 5);
+---
+
+<div class="space-y-4 uppercase font-mono">
+  <h3 class="font-semibold">Writing Log:</h3>
+  <ul>
+    {
+      latestPosts.map((post) => (
+        <li>
+          <a href={`/posts/${post.id}/`}>
+            <span>
+              [{post.data.date.toISOString().split("T")[0]}] {post.data.title}
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</div>

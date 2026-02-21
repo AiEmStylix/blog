@@ -1,4 +1,6 @@
 ---
+import BlogFooter from "../components/BlogFooter.astro";
+import BlogHeader from "../components/BlogHeader.astro";
 import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
 const { title = "Blog của tôi" } = Astro.props;
@@ -16,16 +18,13 @@ const { title = "Blog của tôi" } = Astro.props;
     <ClientRouter />
     <title>{title}</title>
   </head>
-  <body>
-    <slot />
+  <body class="min-h-screen flex flex-col bg-gray-100">
+    <BlogHeader />
+
+    <main class="flex-1 border-t-2 border-4 px-6 py-4">
+      <slot />
+    </main>
+
+    <BlogFooter />
   </body>
 </html>
-
-<style>
-  html,
-  body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-  }
-</style>
