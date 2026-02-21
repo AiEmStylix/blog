@@ -7,11 +7,17 @@ const posts = await getCollection("blog");
 ---
 
 <BaseLayout title="Hello World">
-  <ul>
+  <ul class="space-y-2 font-mono uppercase">
     {
       posts.map((post) => (
         <li>
-          <a href={`/posts/${post.id}/`}>{post.data.title}</a>
+          <article>
+            <h2>
+              <a href={`/posts/${post.id}/`}>
+                [{post.data.date.toISOString().split("T")[0]}] {post.data.title}
+              </a>
+            </h2>
+          </article>
         </li>
       ))
     }
