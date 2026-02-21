@@ -14,5 +14,6 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
 
-  output: 'static'
+  output: 'static',
+  site: 'https://stylix.xyz'
 });

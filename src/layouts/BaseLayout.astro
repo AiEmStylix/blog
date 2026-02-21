@@ -1,6 +1,7 @@
 ---
 import BlogFooter from "../components/BlogFooter.astro";
 import BlogHeader from "../components/BlogHeader.astro";
+import { SITE_TITLE } from "../consts";
 import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
 const { title = "Blog của tôi" } = Astro.props;
@@ -13,15 +14,21 @@ const { title = "Blog của tôi" } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={SITE_TITLE}
+      href={new URL("rss.xml", Astro.site)}
+    />
     <meta name="generator" content={Astro.generator} />
 
     <ClientRouter />
     <title>{title}</title>
   </head>
-  <body class="min-h-screen flex flex-col bg-gray-100">
+  <body class="min-h-screen flex border-4 flex-col bg-gray-100">
     <BlogHeader />
 
-    <main class="flex-1 border-t-2 border-4 px-6 py-4">
+    <main class="flex-1 px-6 border-y-4 py-4">
       <slot />
     </main>
 
