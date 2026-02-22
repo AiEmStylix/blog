@@ -6,7 +6,7 @@ import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
 const posts = await getCollection("blog");
 ---
 
-<BaseLayout title="Hello World">
+<BaseLayout title="System Logs?" description="Log of sentient guys">
   <ul class="space-y-2 font-mono uppercase">
     {
       posts.map((post) => (

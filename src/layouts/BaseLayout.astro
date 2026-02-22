@@ -4,7 +4,7 @@ import BlogHeader from "../components/BlogHeader.astro";
 import { SITE_TITLE } from "../consts";
 import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
-const { title = "Blog của tôi" } = Astro.props;
+const { title, description } = Astro.props;
 ---
 
 <!doctype html>
@@ -25,6 +25,9 @@ const { title = "Blog của tôi" } = Astro.props;
 
     <ClientRouter />
     <title>{title}</title>
+
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
   </head>
   <body class="min-h-screen flex border-4 flex-col bg-gray-100">
     <BlogHeader />
