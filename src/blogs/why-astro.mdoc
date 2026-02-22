@@ -1,0 +1,67 @@
+---
+title: "Tại sao mình chọn Astro cho blog cá nhân?"
+date: 2026-02-21
+---
+
+# {% $frontmatter.title %} {% #overview %}
+
+## TL;DR
+Mình chọn **Astro** vì mình chỉ cần một blog tĩnh, nhanh, tối giản, dễ deploy và không cần JavaScript thừa. Nó phù hợp với mục tiêu hiện tại của mình hơn là dùng một full framework như Vue SPA, Nuxt hay Next.js.
+### Bối cảnh của tớ
+
+Tớ là một lập trình viên đã quen với Vue 3, từng làm fullstack với Nodejs và PostgreSQL.
+
+Tớ đang muốn làm một website vừa là portfolio vừa kiêm blog cá nhân đi ghi lại hành trình học tập của mình, trong quá trình đó mình đã liệt kê ra vài tiêu chí:
+- Tốc độ load phải nhanh (cái này luôn là ưu tiên)
+- SEO tốt
+- Không cần backend (do chỉ là web tĩnh)
+- Dễ deploy
+- Có thể viết bằng Markdown
+- Tập trung vào nội dung thay vì cấu hình
+
+> Khi đó mình đã suy nghĩ liệu mình có nên tiếp tục sử dụng Vue hay nên chọn một framework khác?
+
+### Vì sao mình không dùng Vue
+
+Vue rất mạnh cho website, nhưng nó vốn sinh ra cho SPA (Single Page Application). Nhưng website mà mình muốn thiết kế nó không cần nhiều interactivity, plain text là chính và theo phong cách [brutalism](https://vi.wikipedia.org/wiki/Ch%E1%BB%A7_ngh%C4%A9a_th%C3%B4_m%E1%BB%99c). Điều quan trọng nữa của một blog là SEO tốt, điều mà vốn Vue không hoạt động tốt.
+
+Tất nhiên là vẫn có lựa chọn nếu mình muốn chày cối dùng Vue như sử dụng [Nuxt](https://nuxt.com/). Nhưng bản chất nó vẫn quá overkill so với những gì mình muốn làm. Mình cũng đã tính đến việc sử dụng Javascript thuần, nhưng nó lại quá tốn thời gian. Đó là khi mình nhớ lại một framework mà mình đã từng thấy đâu đó, gọi là [Astro](https://astro.build/).
+### Tại sao lại là Astro?
+#### Lý do đầu tiên, sự quen thuộc: 
+Mình là một lập trình viên đã quen sử dụng **Vue**, nên mình cần 1 framework có cách tiếp cận **component-based** như Vue. **Astro** cũng chọn hướng tiếp cận này cho framework của họ, mình viết component ở một nơi và import nó vào pages mình cần dùng, rất tiện. Thêm nữa framework này cũng có một thứ là [ClientRouter](https://docs.astro.build/en/guides/view-transitions/#router-control), cho phép chuyển trang không cần reload (giống như SPA).
+#### Lý do thứ hai, config tiện lợi và tốc độ nhanh:
+Là một lập trình viên, hiệu năng vẫn luôn là thứ mà mình theo đuổi, dù chỉ optimize được 1ms cũng luôn mà điều mà mình theo đuổi, và **Astro** được quảng cáo là **load nhanh hơn 40% và sử dụng ít hơn 90% Javascript (trust me bro moment)**. Thôi thì tạm thời tin vậy.
+
+Về phần config, Astro có tài liệu rất tường minh về config và mình rất ấn tượng về điều này, không muốn có trailing slash nơi URL. Chỉ cần thêm dòng này vào config: 
+```javascript
+trailingSlash: 'never'
+```
+và ti tỉ những thứ khác, đây là một điều mình rất thích. Một framework mạnh không chỉ ở phần code, mà ở cách tài liệu hướng dẫn cho developer sử dụng như nào. Mình đánh giá rất cao điều này.
+
+#### Hỗ trợ markdown và integration đa dạng
+Mình đã quen sử dụng markdown để viết tài liệu, nên việc một framework có hỗ trợ và tích hợp markdown là một điểm cộng lớn.
+![Markdown meme[/assets/images/markdown-meme.png]]
+Astro có integration chính thức với MDX (ewww React) và Markdoc, cũng như là Content API để lấy bài viết một cách nhanh chóng. I'm so fucking love it <3
+
+Astro được thiết kế theo dạng [Island Architecture](https://docs.astro.build/en/concepts/islands/), định nghĩa của nó ở dưới đây:
+> Ý tưởng chung cho Island Architecture rất đơn giản. Render trang HTML ở server, sau đó chèn placeholder hoặc slot quanh những khu vực có tính động (dynamic cao). Những khu vực đó sẽ sau này sẽ được "[[#^hydrate-quote|hydrate]]" ở phía client thành các widget nhỏ hơn đồng thời tái sử dụng phần HTML ban đầu đã được server render.
+
+> Hydrate là quá trình gắn JavaScript vào HTML đã được render sẵn để biến nó thành interactive. ^hydrate-quote
+
+Điều này nghĩa là mình có thể chia các phần của website thành nhiều khu vực (định nghĩa là Island). Một khu vực có thể là động hay không tùy vào bản thân mình. Khá hay ho nhỉ
+
+![Island Architecture[/assets/images/island-architecture.png]]
+Chính vì thiết kế như vậy nên Astro cũng có intergation chính thức cho React, Vue, Svelte... Mình có thể viết component sử dụng những UI framework đó và import trực tiếp vào Astro, tiện thật.
+
+### Deploy lên đâu
+Vì là đây là static site nên có khá nhiều lựa chọn, có thể là Vercel, Github Pages, Fly.io hay Netlify. Riêng mình thì mình lựa chọn Cloudflare Pages, lý do không gì cả, bởi vì mình quản lý DNS bằng Cloudflare, cũng như là [Cloudflare mới mua lại Astro](https://www.cloudflare.com/press/press-releases/2026/cloudflare-acquires-astro-to-accelerate-the-future-of-high-performance-web-development) nên là deploy lên đây sẽ là lý tưởng nhất.
+
+### Kết luận
+Mình chọn Astro không phải vì nó đang “trend” (thật ra là cũng có chút hihi).
+
+Mình chọn nó vì nó đáp ứng đủ các tiêu chí của mình
+- Nhanh
+- Đơn giản
+- Dễ làm quen
+
+Có thể sau này mình sẽ đổi sang một stack khác, nhưng hiện tại Astro là lựa chọn hợp lý nhất rồi.

@@ -6,9 +6,12 @@ import markdoc from '@astrojs/markdoc';
 import tailwindcss from '@tailwindcss/vite';
 
 
+import sitemap from '@astrojs/sitemap';
+
+
 // https://astro.build/config
 export default defineConfig({
-  integrations: [markdoc()],
+  integrations: [markdoc(), sitemap()],
 
   vite: {
     plugins: [tailwindcss()]
