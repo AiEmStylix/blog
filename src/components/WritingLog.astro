@@ -14,7 +14,7 @@ const latestPosts = posts
     {
       latestPosts.map((post) => (
         <li>
-          <a href={`/posts/${post.id}/`}>
+          <a href={`/posts/${post.id}`}>
             <span>
               [{post.data.date.toISOString().split("T")[0]}] {post.data.title}
             </span>
