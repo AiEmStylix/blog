@@ -41,17 +41,17 @@ và ti tỉ những thứ khác, đây là một điều mình rất thích. M�
 
 #### Hỗ trợ markdown và integration đa dạng
 Mình đã quen sử dụng markdown để viết tài liệu, nên việc một framework có hỗ trợ và tích hợp markdown là một điểm cộng lớn.
-![Markdown meme[/assets/images/markdown-meme.png]]
+![Markdown meme](../assets/images/markdown-meme.png)
 Astro có integration chính thức với MDX (ewww React) và Markdoc, cũng như là Content API để lấy bài viết một cách nhanh chóng. I'm so fucking love it <3
 
 Astro được thiết kế theo dạng [Island Architecture](https://docs.astro.build/en/concepts/islands/), định nghĩa của nó ở dưới đây:
-> Ý tưởng chung cho Island Architecture rất đơn giản. Render trang HTML ở server, sau đó chèn placeholder hoặc slot quanh những khu vực có tính động (dynamic cao). Những khu vực đó sẽ sau này sẽ được "[[#^hydrate-quote|hydrate]]" ở phía client thành các widget nhỏ hơn đồng thời tái sử dụng phần HTML ban đầu đã được server render.
+> Ý tưởng chung cho Island Architecture rất đơn giản. Render trang HTML ở server, sau đó chèn placeholder hoặc slot quanh những khu vực có tính động (dynamic cao). Những khu vực đó sẽ sau này sẽ được "hydrate" ở phía client thành các widget nhỏ hơn đồng thời tái sử dụng phần HTML ban đầu đã được server render.
 
-> Hydrate là quá trình gắn JavaScript vào HTML đã được render sẵn để biến nó thành interactive. ^hydrate-quote
+> Hydrate là quá trình gắn JavaScript vào HTML đã được render sẵn để biến nó thành interactive.
 
 Điều này nghĩa là mình có thể chia các phần của website thành nhiều khu vực (định nghĩa là Island). Một khu vực có thể là động hay không tùy vào bản thân mình. Khá hay ho nhỉ
 
-![Island Architecture[/assets/images/island-architecture.png]]
+![Island Architecture](../assets/images/island-architecture.png)
 Chính vì thiết kế như vậy nên Astro cũng có intergation chính thức cho React, Vue, Svelte... Mình có thể viết component sử dụng những UI framework đó và import trực tiếp vào Astro, tiện thật.
 
 ### Deploy lên đâu
