@@ -1,0 +1,159 @@
+---
+title: Học về Valkey, tại sao không (Phần 1)?
+date: 2026-02-23
+description: Learn about valkey, their architecture and data types
+---
+
+# {% $frontmatter.title %}
+## Valkey là gì?
+
+> **Valkey** là một hệ quản trị cơ sở dữ liệu **in-memory key–value** mã nguồn mở, tương thích với Redis protocol.
+
+Nó là một dự án được fork ra và phát triển độc lập sau khi Redis đổi license từ dạng OSS sang RSAL. Hơn nữa nó cũng được chống lưng bởi các ông lớn như AWS, Orcale, Google và Linux Foundation.
+
+Nếu đã có nền tảng với Redis rồi thì sang Valkey cũng chả khác gì, vì cơ bản nó đều chung protocol cả, nên việc kết nối và sử dụng gần như không khác biệt gì, ít nhất là ở hiện tại.
+
+## Thao tác cơ bản
+### Kiểm tra kết nối
+
+Mở terminal lên, chạy lệnh sau:
+
+```bash
+$ valkey-cli ping
+PONG
+```
+
+Nếu terminal trả về kết quả là `PONG`, thì kết nối đã thành công, giờ thì bắt đầu học thôi.
+
+### Các kiểu dữ liệu
+
+Dữ liệu trong valkey được lưu trữ dưới dạng **key-value**, đồng nghĩa với việc mình có thể access nó rất nhanh a.k.a O(1) look up (đa số trường hợp là thế).
+
+**String**: Kiểu dữ liệu cơ bản của Valkey, đại diện cho chuỗi byte.
+
+Valkey luôn dùng string làm key.  
+
+Khi sử dụng kiểu dữ liệu `string`, thì value cũng là string, nên bản chất là lưu một cặp key–value đơn giản như:
+`"name" -> "stylix"`
+
+Ta có thể dùng lệnh `SET` để tạo ra một cặp giá trị **key-value** và dùng lệnh `GET` để lấy giá trị theo **key**
+```bash
+127.0.0.1:6379> SET i-miss-her NO
+OK
+127.0.0.1:6379> GET i-miss-her
+"NO"
+```
+Vì string trong valkey đại diện cho byte, nên chúng ta có thể dùng nó lưu trữ bất kì dữ liệu dạng byte nào, miễn nó không vượt quá **512MB**
+
+Thử truyền ảnh vào xem như nào, ở đây mình có ảnh Doro.
+
+![Doro](../assets/images/doro.png)
+
+
+Truyền nó vào `stdin` rồi `SET` vào Valkey xem như nào
+
+```bash
+~/Pictures/Doro png
+ ❯ ls
+0.jpg   14.png  20.png  25.png  2.png   34.png  5.png  Doko-Demo-Doa.png  Untitled-1.psd
+10.png  15.png  21.png  26.png  30.png  35.png  6.png  ngunhubo2.png      Untitled-2.psd
+11.png  16.png  22.png  27.png  31.png  36.png  7.png  ngunhubo3.png      Untitled-3.psd
+12.png  17.png  23.png  28.png  32.png  3.png   8.png  ngunhubo.png
+13.png  1.png   24.png  29.png  33.png  4.png   9.png  ufo.png
+
+~/Pictures/Doro png
+ ❯ cat 5.png | valkey-cli -x SET avatar
+OK
+```
+Cho ai không biết, câu lệnh
+` ❯ cat 5.png | valkey-cli -x SET avatar`
+do có `|` hay còn gọi là `pipeline operator` nên nó sẽ lấy kết quả thực hiện của câu lệnh bên trái (`stdout`) là `cat 5.png` truyền vào `stdin` của lệnh bên phải `valkey-cli -x SET avatar`. Flag `-x` ở đây cho phép ta lấy dữ liệu từ `stdin`.
+```
+~/Pictures/Doro png
+ ❯ valkey-cli
+127.0.0.1:6379> KEYS *
+1) "i-miss-her"
+2) "avatar"
+127.0.0.1:6379> GET avatar
+```
+Kết quả nó dumb ra raw data như này, có vẻ là chuẩn rồi.
+![Terminal Output](../assets/terminal/terminal.png)
+
+Câu lệnh `SET` còn có thể thêm argument nữa
+```bash
+127.0.0.1:6379> SET urgay true xx
+(nil)
+127.0.0.1:6379> SET urgay true nx
+OK
+```
+Giải thích chút ở đây, xx là ở đây viết tắt của exists (vì đọc gần giống lol), nghĩa là nếu key tồn tại thì mới `SET` giá trị, ở đây vì nó không tồn tại nên sẽ trả về là `nil`. Ngược lại với `xx` là `nx` (not exists), chỉ `SET` khi không tồn tại key.
+
+---
+Có thể set nhiều key cùng lúc bằng lệnh `mset` và lấy nhiều giá trị bằng lệnh `mget`
+
+```bash
+127.0.0.1:6379> mset car:1 "blue" car:2 "black" car:3 "white"
+OK
+127.0.0.1:6379> mget car:1 car:2 car:3
+1) "blue"
+2) "black"
+3) "white"
+```
+Ta còn có thể dùng `string` như là bộ đếm
+```bash
+127.0.0.1:6379> SET counters 0
+OK
+127.0.0.1:6379> INCR counters
+(integer) 1
+127.0.0.1:6379> INCRBY counters 69
+(integer) 70
+```
+Câu lệnh `INCR` sẽ đọc giá trị của `string` và chuyển nó dưới dạng số nguyên, thực hiện phép cộng thêm một, lưu lạ kết quả dưới dạng `string` và trả về số nguyên.
+
+Tương tự ta có:
+- **INCRBY**: Tăng giá trị lên một số nhất định (có thể dùng số âm)
+- **DECR**: Giảm giá trị xuống một
+- **DECRBY**: Giảm giá trị xuống một số lượng nhất định
+
+Thế sẽ như nào nếu ta dùng mấy lệnh này cho giá trị không phải số nguyên?
+```bash
+127.0.0.1:6379> INCR float
+(error) ERR value is not an integer or out of range
+127.0.0.1:6379> SET string "gay"
+OK
+127.0.0.1:6379> INCR string
+(error) ERR value is not an integer or out of range
+```
+Những câu lệnh này chúng còn có một tác dụng nữa là khởi tạo key nếu chưa tồn tại. Thêm nữa những câu lệnh này là atomic, nghĩa là dù nhiều client thao tác cùng lúc thì sẽ không bao giờ có chuyện race condition.
+**Định nghĩa atomic**
+>Là thực hiện hành động **trọn vẹn như một khối duy nhất**, không thể bị chia nhỏ quan sát được, và không thể bị chen ngang bởi thao tác khác.
+
+Tóm lại chỉ bao gồm 2 ý chính:
+- **All-or-nothing**: Hoặc hoàn thành toàn bộ, hoặc không có thay đổi nào xảy ra.
+- **No interleave**: Không có thao tác nào được xen ngang vào thao tác khác.
+
+Quay lại với Valkey, chúng ta lấy ví dụ nếu không `atomic`.
+- Client 1 đọc giá trị `"69"`
+- Client 2 cũng đọc giá trị `"69"` cùng lúc
+- Cả hai cùng tăng lên thành `70`
+- Và cùng ghi lại giá trị `70`
+
+![](../assets/images/sequence-diagram-valkey.png)
+
+Nếu chuẩn atomic, thì kết quả sẽ là 71, vì sao lại như vậy, do Valkey sử dụng single-threaded event loop. Hệ thống sẽ chỉ dùng **một thread duy nhất để xử lý logic**, và xử lý các request theo vòng lặp (event loop). Nó sẽ xử lý theo kiểu:
+```
+Client A → xong  
+Client B → xong  
+Client C → xong
+```
+
+Thay vì 
+```
+Client A (đọc)  
+Client B (đọc)  
+Client A (ghi)  
+Client B (ghi)
+```
+Dẫn đến mỗi yêu cầu đều là atomic, và sẽ những câu lệnh trên sẽ không có race condition.
+
+Hôm nay đến đây thôi, sẽ còn học thêm tiếp
