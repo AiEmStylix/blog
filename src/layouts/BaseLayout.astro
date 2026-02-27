@@ -5,6 +5,8 @@ import { SITE_TITLE } from "../consts";
 import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
 const { title, description } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
@@ -25,6 +27,9 @@ const { title, description } = Astro.props;
       href={new URL("rss.xml", Astro.site)}
     />
     <meta name="generator" content={Astro.generator} />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalURL} />
 
     <ClientRouter />
     <title>{title}</title>
