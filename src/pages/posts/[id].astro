@@ -19,4 +19,20 @@ const { Content } = await render(post);
 
 <BlogPostLayout title={post.data.title}>
   <Content frontmatter={post.data} />
+  <script
+    src="https://giscus.app/client.js"
+    data-repo="AiEmStylix/blog"
+    data-repo-id="R_kgDORU9ckg"
+    data-category="Announcements"
+    data-category-id="DIC_kwDORU9cks4C5IiJ"
+    data-mapping="pathname"
+    data-strict="1"
+    data-reactions-enabled="1"
+    data-emit-metadata="1"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="vi"
+    crossorigin="anonymous"
+    async
+  ></script>
 </BlogPostLayout>
