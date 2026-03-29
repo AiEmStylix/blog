@@ -1,0 +1,15 @@
+---
+// src/components/YouTube.astro
+const { id, title = "YouTube video player" } = Astro.props;
+---
+
+<iframe
+    width="800"
+    height="315"
+    src={`https://www.youtube.com/embed/${id}`}
+    title={title}
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen
+    style="border-radius: 12px; max-width: 100%;"></iframe>
