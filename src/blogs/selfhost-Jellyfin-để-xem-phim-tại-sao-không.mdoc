@@ -1,0 +1,73 @@
+---
+title: "Selfhost Jellyfin để xem phim: Tại sao không?"
+description: "Selfhost Jellyfin để xem phim: Tại sao không"
+date: 2026-04-08
+---
+# {% $frontmatter.title %}
+
+> **TL;DR:** Gặp chị cái quá nhiều, tôi quyết định tự host web phim xem cho sướng.
+
+### Phim lậu và Quảng Cáo
+Số là một khoảng thời gian trước mình bị dụ dỗ bởi một người xem series The Office, thật ra mình cũng lười xem phim lắm, nhưng người ta là ngoại lệ nên cững ráng kiếm phim xem, với cả tiện thì đợt này đang rảnh nên mình bắt đầu xem sau một thời gian nghỉ ngơi, và trải nghiệm khi tìm bộ này đúng là tệ hại vcl.
+ 
+Hỡi những con người mặc bệnh lậu thâm niên, mọi người chắc hẳn hiểu cảm giác khi mà mình tìm được một bộ phim cảm thấy rất chim ưng, chuẩn bị tận hưởng buổi tối những giây phút xem phim thì:
+- **Click lần 1:** Bật ra một tab mới quảng cáo chị đực.
+- **Click lần 2:** Banner nhấp nháy che mất nút Play.
+- **Đang xem giữa chừng:** Phim đứng hình, xoay vòng vòng, hoặc tệ hơn là bị nhà mạng gõ đầu phải thay đổi tên miền.
+
+Đó là mình đã dùng mấy trình chặn quảng cáo và tracker rồi đấy, tưởng tượng người dùng bình thường vào phải ấn 36 cái quảng cáo mới xem được. Bảo sao mau giàu=)))
+
+Trải nghiệm xem phim như vậy rất khó chịu. Chưa kể có những phim mà bạn những website đó không có (The Office mình phải tìm 4-5 web mới ra được, nhưng mà băng thông của web đó lởm quá, xem cứ cù trọng xoay). Đó là lúc bản thân nhận ra mình cần một giải pháp khác. Mình muốn một trải nghiệm mượt mà, không quảng cáo, chất lượng gốc và quan trọng nhất: **Tất cả phải nằm trong tầm kiểm soát của mình.** Và thế là mình tìm đến con đường "Self-host" với Jellyfin.
+### Giấc mơ mang tên Jellyfin
+
+Dành cho những ai chưa biết, Jellyfin là một hệ thống media server mã nguồn mở và hoàn toàn miễn phí. Nó cho phép bạn quản lý và stream phim, nhạc từ máy chủ cá nhân đến bất kỳ thiết bị nào (TV, điện thoại, laptop) thông qua giao diện đẹp và xịn không kém gì Netflix.
+
+### Cài đặt như thế nào?
+
+Cài đặt docker, tạo file `docker-compose.yml`, copy những câu lệnh bên dưới đây vào file đó, sau đó chạy lệnh `docker compose up -d` là xong. Bạn đã có 1 website để xem phim trên thiết bị của mình. À mà chỉ xem được trên thiết bị của mình thôi, còn muốn expose nó ra mạng ngoài thì còn cần 1-2 bước nữa (mình sẽ ko đi sâu trong bài này).
+```
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    restart: unless-stopped
+    ports:
+      - "8096:8096"
+    volumes:
+      - ./config:/config
+      - ./cache:/cache
+      - ./media:/media
+```
+
+Cảm giác lần đầu tiên truy cập vào tên miền riêng của mình (thay vì những cái tên loằng ngoằng), nhìn thấy kho phim được tự động cập nhật đầy đủ poster, thông tin diễn viên, điểm IMDb... thực sự rất "đã". Không còn banner rác, không còn pop-up
+
+Nhưng nguồn phim lấy ở đâu? Tất nhiên là kéo torrent về rồi chứ còn sao nữa hẹ hẹ hẹ (Cảm ơn **r/privacy** và **1337x** hẹ hẹ hẹ).
+
+Tiện thể thì tính năng của jellyfin khá là xịn, có tự động kéo nguồn sub, cũng như có thể setup phụ đề song ngữ (thật ra mình không cần cái này làm tại mình xem thuần Engsub :v)
+
+![Jellyfin UI](../assets/images/jellyfin.png)
+
+### Góc khuất của dân chơi hệ Self-host
+
+Chơi hệ self-host cũng giống như bạn tự mua gạch về xây nhà vậy. Tự do thì có tự do, nhưng cũng có những vấn đề sau:
+
+**1. Bài toán lưu trữ (Storage)** Muốn xem phim nét, không bị nén mờ tịt như trên mạng thì file phim phải lớn. Một bộ phim 1080p tử tế cũng ngốn từ 5-10GB, còn nếu chơi hệ 4K thì 40-80GB là chuyện bình thường. Chẳng mấy chốc, ổ cứng của bạn sẽ báo động đỏ. Tất nhiên không phải vấn đề, mình có tận 2 tb xem tẹt bô=)))
+
+**2. Reverse Proxy** Đây là phần "khoai" nhất. Cài đặt Jellyfin lên máy chủ thì dễ (chỉ vài dòng lệnh Docker Compose), nhưng để mang nó ra thế giới Internet một cách an toàn và chuyên nghiệp lại là chuyện khác.
+
+**3. Bạn chịu trách nhiệm cho mọi thứ**. Điều này không phải là vấn đề với những ai ham vọc vạch như mình. Tất nhiên đây không phải giải pháp plug and play hoàn toàn nên sẽ không phù hợp với một số người. 
+
+### Kết luận
+
+Vậy, tự host Jellyfin có đáng không?
+
+**Tuyệt đối có.** Những khó khăn về mặt kỹ thuật (như việc cấu hình mạng hay quản lý container) thực chất lại là những bài học thực tế cực kỳ giá trị cho bất kỳ ai đam mê công nghệ
+
+Đổi lại một khoảng thời gian lần mò, mình có được một website để xem phim với trải nghiệm không bị ngắt quãng.
+
+Web phục vụ mục đích cá nhân thôi, nhưng nếu ai muốn xem thì gửi mail cho mình nhé: `stylix032@gmail.com`
+---
+
+![Sunflower](../assets/images/sunflower.jpg)
+
+{% youtube id="yIGH0Mhn6GI" title="nói (dối) với anh" /%}
